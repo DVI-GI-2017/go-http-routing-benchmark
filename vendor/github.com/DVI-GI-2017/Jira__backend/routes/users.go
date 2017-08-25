@@ -14,7 +14,7 @@ func init() {
 var usersRoutes = []Route{
 	{
 		Name:    "Get user by id",
-		Pattern: "/users/:id",
+		Pattern: "/users/hex:id",
 		Method:  http.MethodGet,
 		Handler: auth.ValidateToken(handlers.GetUserById),
 	},
@@ -25,10 +25,10 @@ var usersRoutes = []Route{
 		Handler: auth.ValidateToken(handlers.AllUsers),
 	},
 	{
-		Name:"All user's projects",
-		Pattern:"/users/:id/projects",
-		Method:http.MethodGet,
-		Handler:auth.ValidateToken(handlers.GetAllProjectsFromUser),
+		Name:    "All user's projects",
+		Pattern: "/users/hex:id/projects",
+		Method:  http.MethodGet,
+		Handler: auth.ValidateToken(handlers.GetAllProjectsFromUser),
 	},
 	{
 		Name:    "Check current user",

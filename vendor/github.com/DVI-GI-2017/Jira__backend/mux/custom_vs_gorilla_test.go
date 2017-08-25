@@ -9,9 +9,6 @@ import (
 
 	"encoding/json"
 
-	"fmt"
-	"strings"
-
 	"github.com/buger/jsonparser"
 	"github.com/gorilla/mux"
 )
@@ -20,7 +17,7 @@ var simpleBench = &benchmarkData{
 	basePath: "/api/v1",
 
 	patternGorilla: "/users/{id:[[:xdigit:]]{24}}",
-	patternCustom:  "/users/:id",
+	patternCustom:  "/users/hex:id",
 
 	matchedPath: "/api/v1/users/599ce026ff64e74a60086508",
 
@@ -39,7 +36,7 @@ var nestedBench = &benchmarkData{
 	basePath: "/api/v1",
 
 	patternGorilla: "/projects/{project_id:[[:xdigit:]]{24}}/tasks/{task_id:[[:xdigit:]]{24}}",
-	patternCustom:  "/projects/:project_id/tasks/:task_id",
+	patternCustom:  "/projects/hex:project_id/tasks/hex:task_id",
 
 	matchedPath: "/api/v1/projects/599ce026ff64e74a60086508/tasks/599ca654ff64e71ad83a1bc6",
 
@@ -135,27 +132,6 @@ func initCustomRouter(data *benchmarkData) *router {
 	}
 
 	return router
-}
-
-// Converts flat map to json
-func flatMapToJson(data map[string]string) []byte {
-	template := fmt.Sprintf(`{%s}`, strings.Repeat(`"%s":"%s",`, len(data)))
-
-	keys := make([]string, 0, len(data))
-	values := make([]string, 0, len(data))
-
-	for key, value := range data {
-		keys = append(keys, key)
-		values = append(values, value)
-	}
-
-	toInsert := make([]string, 0, 2*len(data))
-	for i := 0; i < len(data); i++ {
-		toInsert = append(toInsert, keys[i], values[i])
-	}
-
-	str := fmt.Sprintf(template, toInsert)
-	return bytes.NewBufferString(str).Bytes()
 }
 
 // Helper to mock get requests
