@@ -86,7 +86,7 @@ func init() {
 		gplusDenco = loadDenco(gplusAPI)
 	})
 	calcMem("DVI", func() {
-		gplusDenco = loadDviMux(gplusAPI)
+		gplusDvi = loadDviMux(gplusAPI)
 	})
 	calcMem("Echo", func() {
 		gplusEcho = loadEcho(gplusAPI)
