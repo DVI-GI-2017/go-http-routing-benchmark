@@ -228,6 +228,9 @@ func init() {
 	calcMem("Denco", func() {
 		staticDenco = loadDenco(staticRoutes)
 	})
+	calcMem("DVI", func() {
+		staticDvi = loadDviMux(staticRoutes)
+	})
 	calcMem("Echo", func() {
 		staticEcho = loadEcho(staticRoutes)
 	})
@@ -279,9 +282,6 @@ func init() {
 	calcMem("R2router", func() {
 		staticR2router = loadR2router(staticRoutes)
 	})
-	calcMem("Revel", func() {
-		staticRevel = loadRevel(staticRoutes)
-	})
 	calcMem("Rivet", func() {
 		staticRivet = loadRivet(staticRoutes)
 	})
@@ -297,9 +297,6 @@ func init() {
 	calcMem("Vulcan", func() {
 		staticVulcan = loadVulcan(staticRoutes)
 	})
-	// calcMem("Zeus", func() {
-	// 	staticZeus = loadZeus(staticRoutes)
-	// })
 
 	println()
 }
@@ -323,6 +320,9 @@ func BenchmarkBone_StaticAll(b *testing.B) {
 }
 func BenchmarkDenco_StaticAll(b *testing.B) {
 	benchRoutes(b, staticDenco, staticRoutes)
+}
+func BenchmarkDvi_StaticAll(b *testing.B) {
+	benchRoutes(b, staticDvi, staticRoutes)
 }
 func BenchmarkEcho_StaticAll(b *testing.B) {
 	benchRoutes(b, staticEcho, staticRoutes)
@@ -393,7 +393,3 @@ func BenchmarkTraffic_StaticAll(b *testing.B) {
 func BenchmarkVulcan_StaticAll(b *testing.B) {
 	benchRoutes(b, staticVulcan, staticRoutes)
 }
-
-// func BenchmarkZeus_StaticAll(b *testing.B) {
-// 	benchRoutes(b, staticZeus, staticRoutes)
-// }
