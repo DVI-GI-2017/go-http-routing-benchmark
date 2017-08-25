@@ -1,6 +1,10 @@
-package: main
+package: github.com/DVI-GI-2017/go-http-routing-benchmark
 import:
 - package: github.com/gorilla/mux
+  version: ^1.4.0
+- package: github.com/DVI-GI-2017/Jira__backend
+  subpackages:
+  - mux
 - package: github.com/ant0ine/go-json-rest
   version: ^3.3.2
   subpackages:

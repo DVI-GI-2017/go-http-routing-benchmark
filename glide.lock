@@ -1,8 +1,6 @@
-hash: a462040560ec0f0715e2cad5c779474c18367b8b35774d35b1eddf8dfc4d09fe
-updated: 2017-08-25T17:42:35.725695705+03:00
+hash: ae7bd51ea70ff63e04dc40ccba700ba3ca5596fd338e8e9427536ad09d5d51b9
+updated: 2017-08-25T18:08:23.673404821+03:00
 imports:
-- name: github.com/agtorre/gocolorize
-  version: 99fea4bc9517f07eea8194702cb7076f4845b7de
 - name: github.com/ant0ine/go-json-rest
   version: ce4b71cdf7ba29ef443d704bd923f5bbf281ee30
   subpackages:
@@ -25,6 +23,10 @@ imports:
   version: 33e0aa1cb7c019ccc3fbe049a8262a6403d30504
 - name: github.com/dimfeld/httptreemux
   version: 90654bdd3dfc3cac55538aa620f2f4d855bbdb83
+- name: github.com/DVI-GI-2017/Jira__backend
+  version: da5fe937f1d6586687a58f4d854d3b97d2c416cd
+  subpackages:
+  - mux
 - name: github.com/emicklei/go-restful
   version: 68c9750c36bb8cb433f1b88c807b4b30df4acc40
   subpackages:
@@ -69,14 +71,6 @@ imports:
   version: 2dc0031b26575ddf5dab09ab7795105a05575473
 - name: github.com/julienschmidt/httprouter
   version: 975b5c4c7c21c0e3d2764200bf2aa8e34657ae6e
-- name: github.com/klauspost/compress
-  version: f3dce52e0576655d55fd69e74b63da96ad1108f3
-  subpackages:
-  - flate
-  - gzip
-  - zlib
-- name: github.com/klauspost/cpuid
-  version: ae7887de9fa5d2db4eaa8174a7eff2c1ac00f2da
 - name: github.com/labstack/echo
   version: cec7629194fe4bf83b0c72d9a02d340c7a1468ac
 - name: github.com/labstack/gommon
@@ -126,14 +120,6 @@ imports:
   version: 1f30fe9094a513ce4c700b9a54458bbb0c96996c
 - name: github.com/rcrowley/go-tigertonic
   version: fe6b9f080eb79c071836be5c3e2e534dbdbcddd6
-- name: github.com/revel/config
-  version: 662332b741dd464a886ab0901379c02b9bc5dc30
-- name: github.com/revel/pathtree
-  version: 41257a1839e945fce74afd070e02bab2ea2c776a
-- name: github.com/revel/revel
-  version: 417d285da1342bc4f5035cbfef31d85685b29297
-- name: github.com/robfig/pathtree
-  version: 41257a1839e945fce74afd070e02bab2ea2c776a
 - name: github.com/satori/go.uuid
   version: 5bf94b69c6b68ee1b541973bb8e1144db23a194b
 - name: github.com/sirupsen/logrus
