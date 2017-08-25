@@ -17,7 +17,7 @@ import (
 func AddTaskToProject(w http.ResponseWriter, req *http.Request) {
 	params := mux.Params(req)
 
-	projectId := models.NewRequiredId(params.PathParams[":project_id"])
+	projectId := models.NewRequiredId(params.PathParams["project_id"])
 
 	var task models.Task
 	if err := json.Unmarshal(params.Body, &task); err != nil {

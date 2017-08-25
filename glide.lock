@@ -1,5 +1,5 @@
-hash: ae7bd51ea70ff63e04dc40ccba700ba3ca5596fd338e8e9427536ad09d5d51b9
-updated: 2017-08-25T18:08:23.673404821+03:00
+hash: b45df3453fc0e8aa66b256cc59ed1cc8f0875a7927a694e736403fda2ec16a3b
+updated: 2017-08-25T18:56:08.425294987+03:00
 imports:
 - name: github.com/ant0ine/go-json-rest
   version: ce4b71cdf7ba29ef443d704bd923f5bbf281ee30
@@ -24,7 +24,7 @@ imports:
 - name: github.com/dimfeld/httptreemux
   version: 90654bdd3dfc3cac55538aa620f2f4d855bbdb83
 - name: github.com/DVI-GI-2017/Jira__backend
-  version: da5fe937f1d6586687a58f4d854d3b97d2c416cd
+  version: 9af9e7f8ca9f438edac8985cd0d6cbbec54ab2f8
   subpackages:
   - mux
 - name: github.com/emicklei/go-restful
@@ -60,7 +60,7 @@ imports:
 - name: github.com/gorilla/context
   version: 08b5f424b9271eedf6f9f0ce86cb9396ed337a42
 - name: github.com/gorilla/mux
-  version: ac112f7d75a0714af1bd86ab17749b31f7809640
+  version: bcd8bc72b08df0f70df986b97f95590779502d31
 - name: github.com/gorilla/websocket
   version: a69d9f6de432e2c6b296a947d8a5ee88f68522cf
 - name: github.com/gravitational/trace

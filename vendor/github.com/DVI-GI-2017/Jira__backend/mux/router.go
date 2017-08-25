@@ -58,8 +58,8 @@ func (r *router) AddWrappers(wrappers ...WrapperFunc) {
 	r.wrappers = append(r.wrappers, wrappers...)
 }
 
-// Adds Get handler
-func (r *router) Get(pattern string, handler http.HandlerFunc) error {
+// Add generic route to routes.
+func (r *router) Route(pattern, method string, handler http.Handler) error {
 	pattern = convertSimplePatternToRegexp(pattern)
 
 	compiledPattern, err := regexp.Compile(pattern)
@@ -67,25 +67,20 @@ func (r *router) Get(pattern string, handler http.HandlerFunc) error {
 		return err
 	}
 
-	r.routes[http.MethodGet] = append(r.routes[http.MethodGet],
+	r.routes[pattern] = append(r.routes[method],
 		route{compiledPattern, Wrap(handler, r.wrappers...).ServeHTTP})
 
 	return nil
 }
 
+// Adds Get handler
+func (r *router) Get(pattern string, handler http.HandlerFunc) error {
+	return r.Route(pattern, http.MethodGet, handler)
+}
+
 // Adds Post handler
 func (r *router) Post(pattern string, handler http.HandlerFunc) error {
-	pattern = convertSimplePatternToRegexp(pattern)
-
-	compiledPattern, err := regexp.Compile(pattern)
-	if err != nil {
-		return err
-	}
-
-	r.routes[http.MethodPost] = append(r.routes[http.MethodPost],
-		route{compiledPattern, Wrap(handler, r.wrappers...).ServeHTTP})
-
-	return nil
+	return r.Route(pattern, http.MethodPost, handler)
 }
 
 // Listen on given port
