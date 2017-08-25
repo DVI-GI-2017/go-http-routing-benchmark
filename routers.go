@@ -325,6 +325,60 @@ func loadDencoSingle(method, path string, h denco.HandlerFunc) http.Handler {
 	return handler
 }
 
+// DVI router
+type dviHandlerEmptyType struct{}
+
+func (d dviHandlerEmptyType) ServeHTTP(_ http.ResponseWriter, _ *http.Request) {}
+
+var dviHandlerEmpty = dviHandlerEmptyType{}
+
+type dviHandlerWriteType struct{}
+
+func (d dviHandlerWriteType) ServeHTTP(w http.ResponseWriter, req *http.Request) {
+	io.WriteString(w, dvi.Params(req).PathParams["name"])
+}
+
+var dviHandlerWrite = dviHandlerWriteType{}
+
+type dviHandlerTestType struct{}
+
+var dviHandlerTest = dviHandlerTestType{}
+
+func (d dviHandlerTestType) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	io.WriteString(w, r.RequestURI)
+}
+
+func loadDviMux(routes []route) http.Handler {
+	mux, _ := dvi.NewRouter("")
+
+	for _, route := range routes {
+		if loadTestHandler {
+			err := mux.Route(route.path, route.method, dviHandlerTest)
+			if err != nil {
+				panic("can not init dvi router")
+			}
+		} else {
+			err := mux.Route(route.path, route.method, dviHandlerEmpty)
+			if err != nil {
+				panic("can not init dvi router")
+			}
+		}
+	}
+
+	return mux
+}
+
+func loadDviMuxSingle(method, path string, h http.Handler) http.Handler {
+	mux, _ := dvi.NewRouter("")
+
+	err := mux.Route(path, method, h)
+	if err != nil {
+		panic("can not init dvi router")
+	}
+
+	return mux
+}
+
 // Echo
 func echoHandler(_ echo.Context) error {
 	return nil
@@ -779,53 +833,6 @@ func loadHttpTreeMuxSingle(method, path string, handler httptreemux.HandlerFunc)
 	router := httptreemux.New()
 	router.Handle(method, path, handler)
 	return router
-}
-
-// DVI router
-type dviHandlerEmptyType struct{}
-
-func (d dviHandlerEmptyType) ServeHTTP(_ http.ResponseWriter, _ *http.Request) {}
-
-var dviHandlerEmpty = dviHandlerEmptyType{}
-
-type dviHandlerWriteType struct{}
-
-func (d dviHandlerWriteType) ServeHTTP(w http.ResponseWriter, req *http.Request) {
-	io.WriteString(w, dvi.Params(req).PathParams["name"])
-}
-
-var dviHandlerWrite = dviHandlerWriteType{}
-
-type dviHandlerTestType struct{}
-
-var dviHandlerTest = dviHandlerTestType{}
-
-func (d dviHandlerTestType) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	io.WriteString(w, r.RequestURI)
-}
-
-func loadDviMux(routes []route) http.Handler {
-	mux, _ := dvi.NewRouter("")
-
-	for _, route := range routes {
-		err := mux.Route(route.path, route.method, dviHandlerEmpty)
-		if err != nil {
-			panic("can not init dvi router")
-		}
-	}
-
-	return mux
-}
-
-func loadDviMuxSingle(method, path string, h http.Handler) http.Handler {
-	mux, _ := dvi.NewRouter("")
-
-	err := mux.Route(path, method, h)
-	if err != nil {
-		panic("can not init dvi router")
-	}
-
-	return mux
 }
 
 // Kocha-urlrouter
