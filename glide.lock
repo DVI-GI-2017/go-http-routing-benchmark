@@ -1,5 +1,5 @@
 hash: b45df3453fc0e8aa66b256cc59ed1cc8f0875a7927a694e736403fda2ec16a3b
-updated: 2017-08-25T19:33:48.351388743+03:00
+updated: 2017-08-25T21:18:44.049743758+03:00
 imports:
 - name: github.com/ant0ine/go-json-rest
   version: ce4b71cdf7ba29ef443d704bd923f5bbf281ee30
@@ -24,7 +24,7 @@ imports:
 - name: github.com/dimfeld/httptreemux
   version: 90654bdd3dfc3cac55538aa620f2f4d855bbdb83
 - name: github.com/DVI-GI-2017/Jira__backend
-  version: cf2c0ce1ee05350e36d7bdec187025a402a9e5f1
+  version: 5976a89a4561a1835dc4ad4798fce30ca16fdd76
   subpackages:
   - mux
 - name: github.com/emicklei/go-restful
@@ -145,7 +145,7 @@ imports:
 - name: github.com/vanng822/r2router
   version: 1023140a4f309480a35668e695deda550100f502
 - name: github.com/vulcand/predicate
-  version: d04ad8135864ecce1ba3abcf1d2b5ebcde686a5d
+  version: 939c094524d124c55fa8afe0e077701db4a865e2
 - name: github.com/zenazn/goji
   version: c05078ca81941f8e801bba3ddc0e6b86b7fdc893
   subpackages:
@@ -169,7 +169,7 @@ imports:
   - context
   - websocket
 - name: golang.org/x/sys
-  version: 07c182904dbd53199946ba614a412c61d3c548f5
+  version: 22e23b74325bf60e4cc1ce7bdc157eda0d8b5c13
   subpackages:
   - unix
   - windows

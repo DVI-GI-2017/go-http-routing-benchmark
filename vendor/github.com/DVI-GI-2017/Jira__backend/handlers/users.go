@@ -3,8 +3,6 @@ package handlers
 import (
 	"net/http"
 
-	"fmt"
-
 	"github.com/DVI-GI-2017/Jira__backend/models"
 	"github.com/DVI-GI-2017/Jira__backend/mux"
 	"github.com/DVI-GI-2017/Jira__backend/pool"
@@ -44,12 +42,6 @@ func GetAllProjectsFromUser(w http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	// TODO: Fix server crashes.
-	if projectsParsed, ok := projects.(models.ProjectsList); ok {
-		JsonResponse(w, projectsParsed)
-		return
-	} else {
-		JsonErrorResponse(w, fmt.Errorf("can not cast projects '%v' to projects list", projects),
-			http.StatusInternalServerError)
-	}
+	JsonResponse(w, projects.(models.ProjectsList))
+	return
 }

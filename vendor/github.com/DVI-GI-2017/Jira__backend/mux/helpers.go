@@ -3,22 +3,60 @@ package mux
 import (
 	"errors"
 	"fmt"
+	"log"
 	"regexp"
+	"strings"
 )
 
-var paramRegexp = regexp.MustCompile(`:([[:lower:]]|_)+`)
+// Supported types
+const hexType = `(?P<%s>[[:xdigit:]]{24})`
+const intType = `(?P<%s>[[:digit:]]+)`
 
-// Converts patterns like "/users/:id" to "/users/(?P<id>\d+)"
+var paramRegexp = regexp.MustCompile(`(hex|int)?:([[:lower:]]|_)+`)
+
+// Converts patterns like "/users/{id:hex}" to real regexps
 func convertSimplePatternToRegexp(pattern string) string {
 	patternWithParams := paramRegexp.ReplaceAllStringFunc(pattern, func(param string) string {
-		return fmt.Sprintf(`(?P<%s>[[:xdigit:]]{24})`, param[1:])
+		paramParts := strings.Split(param[1:], ":")
+
+		if len(paramParts) == 1 {
+			paramName := paramParts[0]
+			return fmt.Sprintf(hexType, paramName)
+		}
+		if len(paramParts) == 2 {
+			fmtString, err := getPatternByType(paramParts[0])
+
+			if err != nil {
+				log.Panicf("wrong pattern format %s: %v", param, err)
+			}
+
+			return fmt.Sprintf(fmtString, paramParts[1])
+		}
+
+		log.Panicf("wrong pattern format %s", param)
+		return ""
 	})
 
 	return fmt.Sprintf(`^%s/?$`, patternWithParams)
 }
 
+func getPatternByType(name string) (string, error) {
+	switch name {
+	case "hex":
+		return hexType, nil
+	case "int":
+		return intType, nil
+	default:
+		return "", fmt.Errorf("can not find type with name '%s'", name)
+	}
+}
+
 // Return path relative to "base"
 func relativePath(base string, absolute string) (string, error) {
+	if len(base) == 0 {
+		return absolute, nil
+	}
+
 	baseLen := len(base)
 	absoluteLen := len(absolute)
 

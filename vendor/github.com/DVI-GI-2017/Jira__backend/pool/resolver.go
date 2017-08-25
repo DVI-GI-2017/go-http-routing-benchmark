@@ -15,12 +15,11 @@ func getService(action Action) (service ServiceFunc) {
 
 // Creates job with given action and input and returns result.
 func Dispatch(action Action, input interface{}) (interface{}, error) {
-	jobs <- &job{
-		input:   input,
-		service: getService(action),
-	}
+	worker := <-freeWorkers
 
-	jobResult := <-results
+	addJob(worker, input, getService(action))
+
+	jobResult := readResult(worker)
 
 	return jobResult.result, jobResult.err
 }
