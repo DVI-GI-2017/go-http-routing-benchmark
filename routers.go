@@ -21,16 +21,15 @@ import (
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/context"
 	"github.com/bmizerany/pat"
-	"github.com/go-playground/lars"
-	// "github.com/daryl/zeus"
 	"github.com/dimfeld/httptreemux"
 	"github.com/emicklei/go-restful"
 	"github.com/gin-gonic/gin"
 	"github.com/go-macaron/macaron"
 	"github.com/go-martini/martini"
+	"github.com/go-playground/lars"
 	"github.com/go-zoo/bone"
 	"github.com/gocraft/web"
-	"github.com/gorilla/mux"
+	gorilla "github.com/gorilla/mux"
 	"github.com/julienschmidt/httprouter"
 	"github.com/labstack/echo"
 	llog "github.com/lunny/log"
@@ -45,8 +44,6 @@ import (
 	"github.com/pilu/traffic"
 	"github.com/plimble/ace"
 	"github.com/rcrowley/go-tigertonic"
-	"github.com/revel/revel"
-	"github.com/robfig/pathtree"
 	"github.com/typepress/rivet"
 	"github.com/ursiform/bear"
 	"github.com/vanng822/r2router"
@@ -93,13 +90,12 @@ func init() {
 	initBeego()
 	initGin()
 	initMartini()
-	initRevel()
 	initTango()
 	initTraffic()
 }
 
 // Common
-func httpHandlerFunc(w http.ResponseWriter, r *http.Request) {}
+func httpHandlerFunc(_ http.ResponseWriter, _ *http.Request) {}
 
 func httpHandlerFuncTest(w http.ResponseWriter, r *http.Request) {
 	io.WriteString(w, r.RequestURI)
@@ -177,7 +173,7 @@ func loadBearSingle(method string, path string, handler bear.HandlerFunc) http.H
 }
 
 // beego
-func beegoHandler(ctx *context.Context) {}
+func beegoHandler(_ *context.Context) {}
 
 func beegoHandlerWrite(ctx *context.Context) {
 	ctx.WriteString(ctx.Input.Param(":name"))
@@ -290,13 +286,13 @@ func loadBoneSingle(method, path string, handler http.Handler) http.Handler {
 }
 
 // Denco
-func dencoHandler(w http.ResponseWriter, r *http.Request, params denco.Params) {}
+func dencoHandler(_ http.ResponseWriter, _ *http.Request, _ denco.Params) {}
 
-func dencoHandlerWrite(w http.ResponseWriter, r *http.Request, params denco.Params) {
+func dencoHandlerWrite(w http.ResponseWriter, _ *http.Request, params denco.Params) {
 	io.WriteString(w, params.Get("name"))
 }
 
-func dencoHandlerTest(w http.ResponseWriter, r *http.Request, params denco.Params) {
+func dencoHandlerTest(w http.ResponseWriter, r *http.Request, _ denco.Params) {
 	io.WriteString(w, r.RequestURI)
 }
 
@@ -329,7 +325,7 @@ func loadDencoSingle(method, path string, h denco.HandlerFunc) http.Handler {
 }
 
 // Echo
-func echoHandler(c echo.Context) error {
+func echoHandler(_ echo.Context) error {
 	return nil
 }
 
@@ -345,7 +341,7 @@ func echoHandlerTest(c echo.Context) error {
 
 func loadEcho(routes []route) http.Handler {
 	var h echo.HandlerFunc = echoHandler
-	if loadTestHandler { 
+	if loadTestHandler {
 		h = echoHandlerTest
 	}
 
@@ -425,7 +421,7 @@ func loadGinSingle(method, path string, handle gin.HandlerFunc) http.Handler {
 // gocraft/web
 type gocraftWebContext struct{}
 
-func gocraftWebHandler(w web.ResponseWriter, r *web.Request) {}
+func gocraftWebHandler(_ web.ResponseWriter, _ *web.Request) {}
 
 func gocraftWebHandlerWrite(w web.ResponseWriter, r *web.Request) {
 	io.WriteString(w, r.PathParams["name"])
@@ -481,7 +477,7 @@ func loadGocraftWebSingle(method, path string, handler interface{}) http.Handler
 }
 
 // goji
-func gojiFuncWrite(c goji.C, w http.ResponseWriter, r *http.Request) {
+func gojiFuncWrite(c goji.C, w http.ResponseWriter, _ *http.Request) {
 	io.WriteString(w, c.URLParams["name"])
 }
 
@@ -531,7 +527,7 @@ func loadGojiSingle(method, path string, handler interface{}) http.Handler {
 }
 
 // goji v2 (github.com/goji/goji)
-func gojiv2Handler(w http.ResponseWriter, r *http.Request) {}
+func gojiv2Handler(_ http.ResponseWriter, _ *http.Request) {}
 
 func gojiv2HandlerWrite(w http.ResponseWriter, r *http.Request) {
 	io.WriteString(w, gojiv2pat.Param(r, "name"))
@@ -587,7 +583,7 @@ func loadGojiv2Single(method, path string, handler func(http.ResponseWriter, *ht
 }
 
 // go-json-rest/rest
-func goJsonRestHandler(w rest.ResponseWriter, req *rest.Request) {}
+func goJsonRestHandler(_ rest.ResponseWriter, _ *rest.Request) {}
 
 func goJsonRestHandlerWrite(w rest.ResponseWriter, req *rest.Request) {
 	io.WriteString(w.(io.Writer), req.PathParam("name"))
@@ -607,7 +603,7 @@ func loadGoJsonRest(routes []route) http.Handler {
 	restRoutes := make([]*rest.Route, 0, len(routes))
 	for _, route := range routes {
 		restRoutes = append(restRoutes,
-			&rest.Route{route.method, route.path, h},
+			&rest.Route{HttpMethod: route.method, PathExp: route.path, Func: h},
 		)
 	}
 	router, err := rest.MakeRouter(restRoutes...)
@@ -621,7 +617,7 @@ func loadGoJsonRest(routes []route) http.Handler {
 func loadGoJsonRestSingle(method, path string, hfunc rest.HandlerFunc) http.Handler {
 	api := rest.NewApi()
 	router, err := rest.MakeRouter(
-		&rest.Route{method, path, hfunc},
+		&rest.Route{HttpMethod: method, PathExp: path, Func: hfunc},
 	)
 	if err != nil {
 		log.Fatal(err)
@@ -631,7 +627,7 @@ func loadGoJsonRestSingle(method, path string, hfunc rest.HandlerFunc) http.Hand
 }
 
 // go-restful
-func goRestfulHandler(r *restful.Request, w *restful.Response) {}
+func goRestfulHandler(_ *restful.Request, _ *restful.Response) {}
 
 func goRestfulHandlerWrite(r *restful.Request, w *restful.Response) {
 	io.WriteString(w, r.PathParameter("name"))
@@ -697,7 +693,7 @@ func loadGoRestfulSingle(method, path string, handler restful.RouteFunction) htt
 
 // gorilla/mux
 func gorillaHandlerWrite(w http.ResponseWriter, r *http.Request) {
-	params := mux.Vars(r)
+	params := gorilla.Vars(r)
 	io.WriteString(w, params["name"])
 }
 
@@ -708,7 +704,7 @@ func loadGorillaMux(routes []route) http.Handler {
 	}
 
 	re := regexp.MustCompile(":([^/]*)")
-	m := mux.NewRouter()
+	m := gorilla.NewRouter()
 	for _, route := range routes {
 		m.HandleFunc(
 			re.ReplaceAllString(route.path, "{$1}"),
@@ -719,7 +715,7 @@ func loadGorillaMux(routes []route) http.Handler {
 }
 
 func loadGorillaMuxSingle(method, path string, handler http.HandlerFunc) http.Handler {
-	m := mux.NewRouter()
+	m := gorilla.NewRouter()
 	m.HandleFunc(path, handler).Methods(method)
 	return m
 }
@@ -867,7 +863,7 @@ func loadKochaSingle(method, path string, handler *kochaHandler, hfunc http.Hand
 }
 
 // LARS
-func larsHandler(c lars.Context) {
+func larsHandler(_ lars.Context) {
 }
 
 func larsHandlerWrite(c lars.Context) {
@@ -876,10 +872,6 @@ func larsHandlerWrite(c lars.Context) {
 
 func larsHandlerTest(c lars.Context) {
 	io.WriteString(c.Response(), c.Request().RequestURI)
-}
-
-func larsNativeHandlerTest(w http.ResponseWriter, r *http.Request) {
-	io.WriteString(w, r.RequestURI)
 }
 
 func loadLARS(routes []route) http.Handler {
@@ -993,9 +985,9 @@ func loadMartini(routes []route) http.Handler {
 			panic("Unknow HTTP method: " + route.method)
 		}
 	}
-	martini := martini.New()
-	martini.Action(router.Handle)
-	return martini
+	mux := martini.New()
+	mux.Action(router.Handle)
+	return mux
 }
 
 func loadMartiniSingle(method, path string, handler interface{}) http.Handler {
@@ -1015,9 +1007,9 @@ func loadMartiniSingle(method, path string, handler interface{}) http.Handler {
 		panic("Unknow HTTP method: " + method)
 	}
 
-	martini := martini.New()
-	martini.Action(router.Handle)
-	return martini
+	mux := martini.New()
+	mux.Action(router.Handle)
+	return mux
 }
 
 // pat
@@ -1067,7 +1059,7 @@ func loadPatSingle(method, path string, handler http.Handler) http.Handler {
 }
 
 // Possum
-func possumHandler(c *possum.Context) error {
+func possumHandler(_ *possum.Context) error {
 	return nil
 }
 
@@ -1094,16 +1086,16 @@ func loadPossum(routes []route) http.Handler {
 	return router
 }
 
-func loadPossumSingle(method, path string, handler possum.HandlerFunc) http.Handler {
+func loadPossumSingle(_, path string, handler possum.HandlerFunc) http.Handler {
 	router := possum.NewServerMux()
 	router.HandleFunc(possumrouter.Simple(path), handler, possumview.Simple("text/html", "utf-8"))
 	return router
 }
 
 // R2router
-func r2routerHandler(w http.ResponseWriter, req *http.Request, _ r2router.Params) {}
+func r2routerHandler(_ http.ResponseWriter, _ *http.Request, _ r2router.Params) {}
 
-func r2routerHandleWrite(w http.ResponseWriter, req *http.Request, params r2router.Params) {
+func r2routerHandleWrite(w http.ResponseWriter, _ *http.Request, params r2router.Params) {
 	io.WriteString(w, params.Get("name"))
 }
 
@@ -1128,127 +1120,6 @@ func loadR2routerSingle(method, path string, handler r2router.HandlerFunc) http.
 	router := r2router.NewRouter()
 	router.AddHandler(method, path, handler)
 	return router
-}
-
-// Revel (Router only)
-// In the following code some Revel internals are modelled.
-// The original revel code is copyrighted by Rob Figueiredo.
-// See https://github.com/revel/revel/blob/master/LICENSE
-type RevelController struct {
-	*revel.Controller
-	router *revel.Router
-}
-
-func (rc *RevelController) Handle() revel.Result {
-	return revelResult{}
-}
-
-func (rc *RevelController) HandleWrite() revel.Result {
-	return rc.RenderText(rc.Params.Get("name"))
-}
-
-func (rc *RevelController) HandleTest() revel.Result {
-	return rc.RenderText(rc.Request.RequestURI)
-}
-
-type revelResult struct{}
-
-func (rr revelResult) Apply(req *revel.Request, resp *revel.Response) {}
-
-func (rc *RevelController) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	// Dirty hacks, do NOT copy!
-	revel.MainRouter = rc.router
-
-	upgrade := r.Header.Get("Upgrade")
-	if upgrade == "websocket" || upgrade == "Websocket" {
-		panic("Not implemented")
-	} else {
-		var (
-			req  = revel.NewRequest(r)
-			resp = revel.NewResponse(w)
-			c    = revel.NewController(req, resp)
-		)
-		req.Websocket = nil
-		revel.Filters[0](c, revel.Filters[1:])
-		if c.Result != nil {
-			c.Result.Apply(req, resp)
-		} else if c.Response.Status != 0 {
-			panic("Not implemented")
-		}
-		// Close the Writer if we can
-		if w, ok := resp.Out.(io.Closer); ok {
-			w.Close()
-		}
-	}
-}
-
-func initRevel() {
-	// Only use the Revel filters required for this benchmark
-	revel.Filters = []revel.Filter{
-		revel.RouterFilter,
-		revel.ParamsFilter,
-		revel.ActionInvoker,
-	}
-
-	revel.RegisterController((*RevelController)(nil),
-		[]*revel.MethodType{
-			{
-				Name: "Handle",
-			},
-			{
-				Name: "HandleWrite",
-			},
-			{
-				Name: "HandleTest",
-			},
-		})
-}
-
-func loadRevel(routes []route) http.Handler {
-	h := "RevelController.Handle"
-	if loadTestHandler {
-		h = "RevelController.HandleTest"
-	}
-
-	router := revel.NewRouter("")
-
-	// parseRoutes
-	var rs []*revel.Route
-	for _, r := range routes {
-		rs = append(rs, revel.NewRoute(r.method, r.path, h, "", "", 0))
-	}
-	router.Routes = rs
-
-	// updateTree
-	router.Tree = pathtree.New()
-	for _, r := range router.Routes {
-		err := router.Tree.Add(r.TreePath, r)
-		// Allow GETs to respond to HEAD requests.
-		if err == nil && r.Method == "GET" {
-			err = router.Tree.Add("/HEAD"+r.Path, r)
-		}
-		// Error adding a route to the pathtree.
-		if err != nil {
-			panic(err)
-		}
-	}
-
-	rc := new(RevelController)
-	rc.router = router
-	return rc
-}
-
-func loadRevelSingle(method, path, action string) http.Handler {
-	router := revel.NewRouter("")
-
-	route := revel.NewRoute(method, path, action, "", "", 0)
-	if err := router.Tree.Add(route.TreePath, route); err != nil {
-		panic(err)
-	}
-
-	rc := new(RevelController)
-	rc.router = router
-	return rc
 }
 
 // Rivet
@@ -1284,7 +1155,7 @@ func loadRivetSingle(method, path string, handler interface{}) http.Handler {
 }
 
 // Tango
-func tangoHandler(ctx *tango.Context) {}
+func tangoHandler(_ *tango.Context) {}
 
 func tangoHandlerWrite(ctx *tango.Context) {
 	ctx.Write([]byte(ctx.Params().Get(":name")))
@@ -1344,7 +1215,7 @@ func loadTigerTonicSingle(method, path string, handler http.HandlerFunc) http.Ha
 }
 
 // Traffic
-func trafficHandler(w traffic.ResponseWriter, r *traffic.Request) {}
+func trafficHandler(_ traffic.ResponseWriter, _ *traffic.Request) {}
 
 func trafficHandlerWrite(w traffic.ResponseWriter, r *traffic.Request) {
 	io.WriteString(w, r.URL.Query().Get("name"))
@@ -1404,7 +1275,7 @@ func loadTrafficSingle(method, path string, handler traffic.HttpHandleFunc) http
 }
 
 // Mailgun Vulcan
-func vulcanHandler(w http.ResponseWriter, r *http.Request) {}
+func vulcanHandler(_ http.ResponseWriter, _ *http.Request) {}
 
 func vulcanHandlerWrite(w http.ResponseWriter, r *http.Request) {
 	io.WriteString(w, r.URL.Query().Get("name"))
@@ -1428,7 +1299,7 @@ func loadVulcan(routes []route) http.Handler {
 	return mux
 }
 
-func loadVulcanSingle(method, path string, handler http.HandlerFunc) http.Handler {
+func loadVulcanSingle(method, path string, _ http.HandlerFunc) http.Handler {
 	re := regexp.MustCompile(":([^/]*)")
 	mux := vulcan.NewMux()
 	path = re.ReplaceAllString(path, "<$1>")
@@ -1438,52 +1309,6 @@ func loadVulcanSingle(method, path string, handler http.HandlerFunc) http.Handle
 	}
 	return mux
 }
-
-// Zeus
-// func zeusHandlerWrite(w http.ResponseWriter, r *http.Request) {
-// 	io.WriteString(w, zeus.Var(r, "name"))
-// }
-
-// func loadZeus(routes []route) http.Handler {
-// 	h := http.HandlerFunc(httpHandlerFunc)
-// 	if loadTestHandler {
-// 		h = http.HandlerFunc(httpHandlerFuncTest)
-// 	}
-
-// 	m := zeus.New()
-// 	for _, route := range routes {
-// 		switch route.method {
-// 		case "GET":
-// 			m.GET(route.path, h)
-// 		case "POST":
-// 			m.POST(route.path, h)
-// 		case "PUT":
-// 			m.PUT(route.path, h)
-// 		case "DELETE":
-// 			m.DELETE(route.path, h)
-// 		default:
-// 			panic("Unknow HTTP method: " + route.method)
-// 		}
-// 	}
-// 	return m
-// }
-
-// func loadZeusSingle(method, path string, handler http.HandlerFunc) http.Handler {
-// 	m := zeus.New()
-// 	switch method {
-// 	case "GET":
-// 		m.GET(path, handler)
-// 	case "POST":
-// 		m.POST(path, handler)
-// 	case "PUT":
-// 		m.PUT(path, handler)
-// 	case "DELETE":
-// 		m.DELETE(path, handler)
-// 	default:
-// 		panic("Unknow HTTP method: " + method)
-// 	}
-// 	return m
-// }
 
 // Usage notice
 func main() {
