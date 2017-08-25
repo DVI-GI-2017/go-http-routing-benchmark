@@ -156,9 +156,6 @@ func init() {
 	calcMem("R2router", func() {
 		parseR2router = loadR2router(parseAPI)
 	})
-	calcMem("Revel", func() {
-		parseRevel = loadRevel(parseAPI)
-	})
 	calcMem("Rivet", func() {
 		parseRivet = loadRivet(parseAPI)
 	})
@@ -174,9 +171,6 @@ func init() {
 	calcMem("Vulcan", func() {
 		parseVulcan = loadVulcan(parseAPI)
 	})
-	// calcMem("Zeus", func() {
-	// 	parseZeus = loadZeus(parseAPI)
-	// })
 
 	println()
 }

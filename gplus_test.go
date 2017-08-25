@@ -136,9 +136,6 @@ func init() {
 	calcMem("R2router", func() {
 		gplusR2router = loadR2router(gplusAPI)
 	})
-	calcMem("Revel", func() {
-		gplusRevel = loadRevel(gplusAPI)
-	})
 	calcMem("Rivet", func() {
 		gplusRivet = loadRivet(gplusAPI)
 	})
@@ -154,9 +151,6 @@ func init() {
 	calcMem("Vulcan", func() {
 		gplusVulcan = loadVulcan(gplusAPI)
 	})
-	// calcMem("Zeus", func() {
-	// 	gplusZeus = loadZeus(gplusAPI)
-	// })
 
 	println()
 }

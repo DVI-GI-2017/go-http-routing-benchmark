@@ -27,20 +27,16 @@ var (
 		{"GorillaMux", loadGorillaMux},
 		{"HttpRouter", loadHttpRouter},
 		{"HttpTreeMux", loadHttpTreeMux},
-		//{"Kocha", loadKocha},
 		{"LARS", loadLARS},
 		{"Macaron", loadMacaron},
 		{"Martini", loadMartini},
 		{"Pat", loadPat},
 		{"Possum", loadPossum},
 		{"R2router", loadR2router},
-		{"Revel", loadRevel},
 		{"Rivet", loadRivet},
-		//{"Tango", loadTango},
 		{"TigerTonic", loadTigerTonic},
 		{"Traffic", loadTraffic},
 		{"Vulcan", loadVulcan},
-		// {"Zeus", loadZeus},
 	}
 
 	// all APIs

@@ -374,9 +374,6 @@ func init() {
 	calcMem("R2router", func() {
 		githubR2router = loadR2router(githubAPI)
 	})
-	calcMem("Revel", func() {
-		githubRevel = loadRevel(githubAPI)
-	})
 	calcMem("Rivet", func() {
 		githubRivet = loadRivet(githubAPI)
 	})
