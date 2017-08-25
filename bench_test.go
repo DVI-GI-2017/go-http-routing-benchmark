@@ -126,6 +126,12 @@ func BenchmarkDenco_Param(b *testing.B) {
 	r, _ := http.NewRequest("GET", "/user/gordon", nil)
 	benchRequest(b, router, r)
 }
+func BenchmarkDvi_Param(b *testing.B) {
+	router := loadDviMuxSingle("GET", "/user/:name", dviHandler)
+
+	r, _ := http.NewRequest("GET", "/user/gordon", nil)
+	benchRequest(b, router, r)
+}
 func BenchmarkEcho_Param(b *testing.B) {
 	router := loadEchoSingle("GET", "/user/:name", echoHandler)
 
@@ -265,13 +271,6 @@ func BenchmarkVulcan_Param(b *testing.B) {
 	benchRequest(b, router, r)
 }
 
-// func BenchmarkZeus_Param(b *testing.B) {
-// 	router := loadZeusSingle("GET", "/user/:name", http.HandlerFunc(httpHandlerFunc))
-
-// 	r, _ := http.NewRequest("GET", "/user/gordon", nil)
-// 	benchRequest(b, router, r)
-// }
-
 // Route with 5 Params (no write)
 const fiveColon = "/:a/:b/:c/:d/:e"
 const fiveBrace = "/{a}/{b}/{c}/{d}/{e}"
@@ -303,6 +302,12 @@ func BenchmarkBone_Param5(b *testing.B) {
 }
 func BenchmarkDenco_Param5(b *testing.B) {
 	router := loadDencoSingle("GET", fiveColon, dencoHandler)
+
+	r, _ := http.NewRequest("GET", fiveRoute, nil)
+	benchRequest(b, router, r)
+}
+func BenchmarkDvi_Param5(b *testing.B) {
+	router := loadDviMuxSingle("GET", fiveColon, dviHandler)
 
 	r, _ := http.NewRequest("GET", fiveRoute, nil)
 	benchRequest(b, router, r)
@@ -445,13 +450,6 @@ func BenchmarkVulcan_Param5(b *testing.B) {
 	benchRequest(b, router, r)
 }
 
-// func BenchmarkZeus_Param5(b *testing.B) {
-// 	router := loadZeusSingle("GET", fiveColon, http.HandlerFunc(httpHandlerFunc))
-
-// 	r, _ := http.NewRequest("GET", fiveRoute, nil)
-// 	benchRequest(b, router, r)
-// }
-
 // Route with 20 Params (no write)
 const twentyColon = "/:a/:b/:c/:d/:e/:f/:g/:h/:i/:j/:k/:l/:m/:n/:o/:p/:q/:r/:s/:t"
 const twentyBrace = "/{a}/{b}/{c}/{d}/{e}/{f}/{g}/{h}/{i}/{j}/{k}/{l}/{m}/{n}/{o}/{p}/{q}/{r}/{s}/{t}"
@@ -483,6 +481,12 @@ func BenchmarkBone_Param20(b *testing.B) {
 }
 func BenchmarkDenco_Param20(b *testing.B) {
 	router := loadDencoSingle("GET", twentyColon, dencoHandler)
+
+	r, _ := http.NewRequest("GET", twentyRoute, nil)
+	benchRequest(b, router, r)
+}
+func BenchmarkDvi_Param20(b *testing.B) {
+	router := loadDviMuxSingle("GET", twentyColon, dviHandler)
 
 	r, _ := http.NewRequest("GET", twentyRoute, nil)
 	benchRequest(b, router, r)
@@ -625,13 +629,6 @@ func BenchmarkVulcan_Param20(b *testing.B) {
 	benchRequest(b, router, r)
 }
 
-// func BenchmarkZeus_Param20(b *testing.B) {
-// 	router := loadZeusSingle("GET", twentyColon, http.HandlerFunc(httpHandlerFunc))
-
-// 	r, _ := http.NewRequest("GET", twentyRoute, nil)
-// 	benchRequest(b, router, r)
-// }
-
 // Route with Param and write
 func BenchmarkAce_ParamWrite(b *testing.B) {
 	router := loadAceSingle("GET", "/user/:name", aceHandleWrite)
@@ -659,6 +656,12 @@ func BenchmarkBone_ParamWrite(b *testing.B) {
 }
 func BenchmarkDenco_ParamWrite(b *testing.B) {
 	router := loadDencoSingle("GET", "/user/:name", dencoHandlerWrite)
+
+	r, _ := http.NewRequest("GET", "/user/gordon", nil)
+	benchRequest(b, router, r)
+}
+func BenchmarkDvi_ParamWrite(b *testing.B) {
+	router := loadDviMuxSingle("GET", "/user/:name", dviHandler)
 
 	r, _ := http.NewRequest("GET", "/user/gordon", nil)
 	benchRequest(b, router, r)
@@ -803,10 +806,3 @@ func BenchmarkVulcan_ParamWrite(b *testing.B) {
 	r, _ := http.NewRequest("GET", "/user/gordon", nil)
 	benchRequest(b, router, r)
 }
-
-// func BenchmarkZeus_ParamWrite(b *testing.B) {
-// 	router := loadZeusSingle("GET", "/user/:name", zeusHandlerWrite)
-
-// 	r, _ := http.NewRequest("GET", "/user/gordon", nil)
-// 	benchRequest(b, router, r)
-// }

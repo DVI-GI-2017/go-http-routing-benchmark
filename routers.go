@@ -784,16 +784,29 @@ func loadHttpTreeMuxSingle(method, path string, handler httptreemux.HandlerFunc)
 // DVI router
 type dviEmptyHandler struct{}
 
-func (d dviEmptyHandler) ServeHTTP(_ http.ResponseWriter, _ * http.Request)  {}
+var dviHandler = dviEmptyHandler{}
+
+func (d dviEmptyHandler) ServeHTTP(_ http.ResponseWriter, _ *http.Request) {}
 
 func loadDviMux(routes []route) http.Handler {
 	mux, _ := dvi.NewRouter("")
 
 	for _, route := range routes {
-		err := mux.Route(route.path, route.method, dviEmptyHandler{})
+		err := mux.Route(route.path, route.method, dviHandler)
 		if err != nil {
 			panic("can not init dvi router")
 		}
+	}
+
+	return mux
+}
+
+func loadDviMuxSingle(method, path string, h http.Handler) http.Handler {
+	mux, _ := dvi.NewRouter("")
+
+	err := mux.Route(path, method, h)
+	if err != nil {
+		panic("can not init dvi router")
 	}
 
 	return mux
