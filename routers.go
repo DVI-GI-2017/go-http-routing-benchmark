@@ -17,6 +17,7 @@ import (
 	// - Keep the benchmark functions etc. alphabetically sorted
 	// - Make a pull request (without benchmark results) at
 	//   https://github.com/julienschmidt/go-http-routing-benchmark
+	dvi "github.com/DVI-GI-2017/Jira__backend/mux"
 	"github.com/ant0ine/go-json-rest/rest"
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/context"
@@ -778,6 +779,24 @@ func loadHttpTreeMuxSingle(method, path string, handler httptreemux.HandlerFunc)
 	router := httptreemux.New()
 	router.Handle(method, path, handler)
 	return router
+}
+
+// DVI router
+type dviEmptyHandler struct{}
+
+func (d dviEmptyHandler) ServeHTTP(_ http.ResponseWriter, _ * http.Request)  {}
+
+func loadDviMux(routes []route) http.Handler {
+	mux, _ := dvi.NewRouter("")
+
+	for _, route := range routes {
+		err := mux.Route(route.path, route.method, dviEmptyHandler{})
+		if err != nil {
+			panic("can not init dvi router")
+		}
+	}
+
+	return mux
 }
 
 // Kocha-urlrouter
