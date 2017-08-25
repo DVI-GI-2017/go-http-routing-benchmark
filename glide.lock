@@ -1,5 +1,5 @@
 hash: b45df3453fc0e8aa66b256cc59ed1cc8f0875a7927a694e736403fda2ec16a3b
-updated: 2017-08-25T21:56:15.341089287+03:00
+updated: 2017-08-25T22:36:23.927696273+03:00
 imports:
 - name: github.com/ant0ine/go-json-rest
   version: ce4b71cdf7ba29ef443d704bd923f5bbf281ee30
@@ -24,7 +24,7 @@ imports:
 - name: github.com/dimfeld/httptreemux
   version: 90654bdd3dfc3cac55538aa620f2f4d855bbdb83
 - name: github.com/DVI-GI-2017/Jira__backend
-  version: f763ca9fa843e34f238bd30e87b710c02ce65a4c
+  version: 8d5073206a9c472a634315442b2ed031fb0ed216
   subpackages:
   - mux
 - name: github.com/emicklei/go-restful

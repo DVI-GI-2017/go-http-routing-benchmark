@@ -14,8 +14,9 @@ func NewRouter(rootPath string) (*router, error) {
 	r := &router{}
 	r.routes = make(map[string]routes)
 
-	r.routes[http.MethodGet] = make(routes, 0, 10)
-	r.routes[http.MethodPost] = make(routes, 0, 10)
+	for _, m := range supportedMethods {
+		r.routes[m] = make(routes, 0)
+	}
 
 	err := r.SetRootPath(rootPath)
 	if err != nil {
@@ -23,6 +24,12 @@ func NewRouter(rootPath string) (*router, error) {
 	}
 
 	return r, nil
+}
+
+// Supported methods
+var supportedMethods = [...]string{
+	http.MethodGet, http.MethodPost, http.MethodDelete,
+	http.MethodPut, http.MethodPatch, http.MethodHead,
 }
 
 type router struct {
@@ -65,6 +72,10 @@ func (r *router) Route(pattern, method string, handler http.Handler) error {
 	compiledPattern, err := regexp.Compile(pattern)
 	if err != nil {
 		return err
+	}
+
+	if _, ok := r.routes[method]; !ok {
+		return fmt.Errorf("method '%s' not supported", method)
 	}
 
 	r.routes[method] = append(r.routes[method],
