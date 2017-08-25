@@ -67,7 +67,7 @@ func (r *router) Route(pattern, method string, handler http.Handler) error {
 		return err
 	}
 
-	r.routes[pattern] = append(r.routes[method],
+	r.routes[method] = append(r.routes[method],
 		route{compiledPattern, Wrap(handler, r.wrappers...).ServeHTTP})
 
 	return nil
