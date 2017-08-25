@@ -1,0 +1,12 @@
+{
+  "server": {
+    "port": 3000
+  },
+  "mongo": {
+    "server": "mongodb",
+    "host": "127.0.0.1",
+    "port": 27017,
+    "db": "jira-clone",
+    "drop": true
+  }
+}

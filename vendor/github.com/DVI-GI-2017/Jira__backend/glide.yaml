@@ -1,0 +1,11 @@
+package: github.com/DVI-GI-2017/Jira__backend
+import:
+- package: github.com/dgrijalva/jwt-go
+  subpackages:
+  - request
+- package: gopkg.in/mgo.v2
+  subpackages:
+  - bson
+testImport:
+- package: github.com/gorilla/mux
+- package: github.com/buger/jsonparser

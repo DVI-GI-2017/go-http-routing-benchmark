@@ -1,0 +1,21 @@
+hash: 9789d0de4abc13cb8a3629466b928451b7fe9845b5149c7f634767b5c79e77f4
+updated: 2017-08-24T14:42:05.659302989+03:00
+imports:
+- name: github.com/dgrijalva/jwt-go
+  version: a539ee1a749a2b895533f979515ac7e6e0f5b650
+  subpackages:
+  - request
+- name: gopkg.in/mgo.v2
+  version: 3f83fa5005286a7fe593b055f0d7771a7dce4655
+  subpackages:
+  - bson
+  - internal/json
+  - internal/sasl
+  - internal/scram
+testImports:
+- name: github.com/buger/jsonparser
+  version: fda8192cc4f100afbdbbcce82284a5b711969174
+- name: github.com/gorilla/context
+  version: 08b5f424b9271eedf6f9f0ce86cb9396ed337a42
+- name: github.com/gorilla/mux
+  version: ac112f7d75a0714af1bd86ab17749b31f7809640

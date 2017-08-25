@@ -1,0 +1,19 @@
+language: go
+
+go:
+  - 1.8
+
+branches:
+  only:
+  - master
+  - develop
+
+deploy:
+  provider: heroku
+  api_key:
+    secure: $HEROKU_KEY
+  app: jira-clone
+  on:
+      repo: DVI-GI-2017/Jira__backend
+      branch: develop
+  skip_cleanup: true
