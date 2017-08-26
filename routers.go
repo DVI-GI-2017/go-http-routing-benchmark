@@ -349,19 +349,17 @@ func (d dviHandlerTestType) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 }
 
 func loadDviMux(routes []route) http.Handler {
+	var h http.Handler = dviHandlerEmpty
+	if loadTestHandler {
+		h = dviHandlerTest
+	}
+
 	mux, _ := dvi.NewRouter("")
 
 	for _, route := range routes {
-		if loadTestHandler {
-			err := mux.Route(route.path, route.method, dviHandlerTest)
-			if err != nil {
-				panic("can not init dvi router")
-			}
-		} else {
-			err := mux.Route(route.path, route.method, dviHandlerEmpty)
-			if err != nil {
-				panic("can not init dvi router")
-			}
+		err := mux.Route(route.path, route.method, h)
+		if err != nil {
+			panic("can not init dvi router")
 		}
 	}
 

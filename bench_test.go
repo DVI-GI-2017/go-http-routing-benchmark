@@ -127,7 +127,7 @@ func BenchmarkDenco_Param(b *testing.B) {
 	benchRequest(b, router, r)
 }
 func BenchmarkDvi_Param(b *testing.B) {
-	router := loadDviMuxSingle("GET", "/user/:name", dviHandlerEmpty)
+	router := loadDviMuxSingle("GET", "/user/{name}", dviHandlerEmpty)
 
 	r, _ := http.NewRequest("GET", "/user/gordon", nil)
 	benchRequest(b, router, r)
@@ -307,7 +307,7 @@ func BenchmarkDenco_Param5(b *testing.B) {
 	benchRequest(b, router, r)
 }
 func BenchmarkDvi_Param5(b *testing.B) {
-	router := loadDviMuxSingle("GET", fiveColon, dviHandlerEmpty)
+	router := loadDviMuxSingle("GET", fiveBrace, dviHandlerEmpty)
 
 	r, _ := http.NewRequest("GET", fiveRoute, nil)
 	benchRequest(b, router, r)
@@ -486,7 +486,7 @@ func BenchmarkDenco_Param20(b *testing.B) {
 	benchRequest(b, router, r)
 }
 func BenchmarkDvi_Param20(b *testing.B) {
-	router := loadDviMuxSingle("GET", twentyColon, dviHandlerEmpty)
+	router := loadDviMuxSingle("GET", twentyBrace, dviHandlerEmpty)
 
 	r, _ := http.NewRequest("GET", twentyRoute, nil)
 	benchRequest(b, router, r)
@@ -661,7 +661,7 @@ func BenchmarkDenco_ParamWrite(b *testing.B) {
 	benchRequest(b, router, r)
 }
 func BenchmarkDvi_ParamWrite(b *testing.B) {
-	router := loadDviMuxSingle("GET", "/user/:name", dviHandlerWrite)
+	router := loadDviMuxSingle("GET", "/user/{name}", dviHandlerWrite)
 
 	r, _ := http.NewRequest("GET", "/user/gordon", nil)
 	benchRequest(b, router, r)
