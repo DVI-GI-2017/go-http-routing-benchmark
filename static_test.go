@@ -194,7 +194,6 @@ var (
 	staticPat        http.Handler
 	staticPossum     http.Handler
 	staticR2router   http.Handler
-	staticRevel      http.Handler
 	staticRivet      http.Handler
 	staticTango      http.Handler
 	staticTigerTonic http.Handler
@@ -374,9 +373,6 @@ func BenchmarkPossum_StaticAll(b *testing.B) {
 }
 func BenchmarkR2router_StaticAll(b *testing.B) {
 	benchRoutes(b, staticR2router, staticRoutes)
-}
-func BenchmarkRevel_StaticAll(b *testing.B) {
-	benchRoutes(b, staticRevel, staticRoutes)
 }
 func BenchmarkRivet_StaticAll(b *testing.B) {
 	benchRoutes(b, staticRivet, staticRoutes)
