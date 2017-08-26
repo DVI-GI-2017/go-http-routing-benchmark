@@ -17,7 +17,7 @@ var simpleBench = &benchmarkData{
 	basePath: "/api/v1",
 
 	patternGorilla: "/users/{id:[[:xdigit:]]{24}}",
-	patternCustom:  "/users/hex:id",
+	patternCustom:  "/users/{hex:id}",
 
 	matchedPath: "/api/v1/users/599ce026ff64e74a60086508",
 
@@ -36,7 +36,7 @@ var nestedBench = &benchmarkData{
 	basePath: "/api/v1",
 
 	patternGorilla: "/projects/{project_id:[[:xdigit:]]{24}}/tasks/{task_id:[[:xdigit:]]{24}}",
-	patternCustom:  "/projects/hex:project_id/tasks/hex:task_id",
+	patternCustom:  "/projects/{hex:project_id}/tasks/{hex:task_id}",
 
 	matchedPath: "/api/v1/projects/599ce026ff64e74a60086508/tasks/599ca654ff64e71ad83a1bc6",
 

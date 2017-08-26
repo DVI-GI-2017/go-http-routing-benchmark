@@ -1,5 +1,5 @@
-hash: b45df3453fc0e8aa66b256cc59ed1cc8f0875a7927a694e736403fda2ec16a3b
-updated: 2017-08-25T22:36:23.927696273+03:00
+hash: 40f497cbeb1615bb847b58cacb0d4baef12eff2b1e04193debb5c0f459105e0c
+updated: 2017-08-26T05:14:48.735615353+03:00
 imports:
 - name: github.com/ant0ine/go-json-rest
   version: ce4b71cdf7ba29ef443d704bd923f5bbf281ee30
@@ -24,7 +24,7 @@ imports:
 - name: github.com/dimfeld/httptreemux
   version: 90654bdd3dfc3cac55538aa620f2f4d855bbdb83
 - name: github.com/DVI-GI-2017/Jira__backend
-  version: 8d5073206a9c472a634315442b2ed031fb0ed216
+  version: 38ec3a97f454bdaa8b8b9d9abacdc88bf6912e87
   subpackages:
   - mux
 - name: github.com/emicklei/go-restful
@@ -157,7 +157,7 @@ imports:
   - pat
   - pattern
 - name: golang.org/x/crypto
-  version: eb71ad9bd329b5ac0fd0148dd99bd62e8be8e035
+  version: 81e90905daefcd6fd217b62423c0908922eadb30
   subpackages:
   - acme
   - acme/autocert
@@ -169,7 +169,7 @@ imports:
   - context
   - websocket
 - name: golang.org/x/sys
-  version: 22e23b74325bf60e4cc1ce7bdc157eda0d8b5c13
+  version: 2d6f6f883a06fc0d5f4b14a81e4c28705ea64c15
   subpackages:
   - unix
   - windows

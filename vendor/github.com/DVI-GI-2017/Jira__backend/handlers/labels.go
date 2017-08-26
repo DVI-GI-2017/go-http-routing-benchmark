@@ -2,7 +2,6 @@ package handlers
 
 import (
 	"encoding/json"
-	"fmt"
 	"net/http"
 
 	"github.com/DVI-GI-2017/Jira__backend/models"
@@ -46,21 +45,9 @@ func AddLabelToTask(w http.ResponseWriter, req *http.Request) {
 	taskId := models.NewRequiredId(params.PathParams["task_id"])
 	taskLabel := models.TaskLabel{TaskId: taskId, Label: label}
 
-	exists, err := pool.Dispatch(pool.LabelAlreadySet, taskLabel)
-	if err != nil {
-		JsonErrorResponse(w, err, http.StatusInternalServerError)
-		return
-	}
-
-	if exists.(bool) {
-		JsonErrorResponse(w, fmt.Errorf("label '%v' already set on project '%s'", label, taskId.Hex()),
-			http.StatusConflict)
-		return
-	}
-
 	labels, err := pool.Dispatch(pool.LabelAddToTask, taskLabel)
 	if err != nil {
-		JsonErrorResponse(w, err, http.StatusNotFound)
+		JsonErrorResponse(w, err, http.StatusBadRequest)
 		return
 	}
 
@@ -81,7 +68,6 @@ func DeleteLabelFromTask(w http.ResponseWriter, req *http.Request) {
 	}
 
 	taskId := models.NewRequiredId(params.PathParams["task_id"])
-
 	taskLabel := models.TaskLabel{TaskId: taskId, Label: label}
 
 	labels, err := pool.Dispatch(pool.LabelDeleteFromTask, taskLabel)

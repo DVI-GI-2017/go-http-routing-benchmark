@@ -2,7 +2,6 @@ package handlers
 
 import (
 	"encoding/json"
-	"fmt"
 	"net/http"
 
 	"github.com/DVI-GI-2017/Jira__backend/models"
@@ -33,18 +32,6 @@ func AddTaskToProject(w http.ResponseWriter, req *http.Request) {
 	}
 
 	task.Id = models.NewAutoId()
-
-	exists, err := pool.Dispatch(pool.TaskExists, task)
-	if err != nil {
-		JsonErrorResponse(w, fmt.Errorf("can not check task existence: %v", err),
-			http.StatusInternalServerError)
-		return
-	}
-	if exists.(bool) {
-		JsonErrorResponse(w, fmt.Errorf("Task with title: %s already exists!", task.Title),
-			http.StatusConflict)
-		return
-	}
 
 	newTask, err := pool.Dispatch(pool.TaskCreate, task)
 	if err != nil {

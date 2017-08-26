@@ -14,19 +14,19 @@ func init() {
 var labelsRoutes = []Route{
 	{
 		Name:    "Add label to task (task_id)",
-		Pattern: "/tasks/hex:task_id/labels",
+		Pattern: "/tasks/{hex:task_id}/labels",
 		Method:  http.MethodPost,
 		Handler: auth.ValidateToken(handlers.AddLabelToTask),
 	},
 	{
 		Name:    "All labels on task",
-		Pattern: "/tasks/hex:task_id/labels",
+		Pattern: "/tasks/{hex:task_id}/labels",
 		Method:  http.MethodGet,
 		Handler: auth.ValidateToken(handlers.AllLabelsOnTask),
 	},
 	{
 		Name:    "Delete label from task (task_id)",
-		Pattern: "/tasks/hex:task_id/labels/delete",
+		Pattern: "/tasks/{hex:task_id}/labels/delete",
 		Method:  http.MethodPost,
 		Handler: auth.ValidateToken(handlers.DeleteLabelFromTask),
 	},

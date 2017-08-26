@@ -1,23 +1,27 @@
 package pool
 
-import "log"
+import "fmt"
 
-func getService(action Action) (service ServiceFunc) {
+func getService(action Action) (ServiceFunc, error) {
 	for prefix, resolver := range resolvers {
 		if action.HasPrefix(prefix) {
 			return resolver(action)
 		}
 	}
 
-	log.Panicf("can not resolve service by action: %v", action)
-	return
+	return nil, fmt.Errorf("can not resolve service by action: %v", action)
 }
 
 // Creates job with given action and input and returns result.
 func Dispatch(action Action, input interface{}) (interface{}, error) {
 	worker := <-freeWorkers
 
-	addJob(worker, input, getService(action))
+	service, err := getService(action)
+	if err != nil {
+		return nil, fmt.Errorf("can not dispatch action: %v", err)
+	}
+
+	addJob(worker, input, service)
 
 	jobResult := readResult(worker)
 

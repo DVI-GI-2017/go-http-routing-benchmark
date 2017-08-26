@@ -5,6 +5,7 @@ import:
 - package: github.com/DVI-GI-2017/Jira__backend
   subpackages:
   - mux
+  version: develop
 - package: github.com/ant0ine/go-json-rest
   version: ^3.3.2
   subpackages:

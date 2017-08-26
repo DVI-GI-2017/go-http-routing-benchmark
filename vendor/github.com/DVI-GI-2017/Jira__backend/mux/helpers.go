@@ -13,16 +13,17 @@ const stringType = `(?P<%s>[[:alnum:]]+)`
 const hexType = `(?P<%s>[[:xdigit:]]{24})`
 const intType = `(?P<%s>[[:digit:]]+)`
 
-var paramRegexp = regexp.MustCompile(`(str|hex|int)??:((?:[[:lower:]]|_)+)`)
+var paramRegexp = regexp.MustCompile(`{((str|hex|int):)??((?:[[:lower:]]|_)+)}`)
 
 // Converts patterns like "/users/id:hex" to real regexps
 func convertSimplePatternToRegexp(pattern string) string {
 	patternWithParams := paramRegexp.ReplaceAllStringFunc(pattern, func(param string) string {
-		paramParts := strings.Split(param, ":")
-
-		if len(paramParts) == 1 || len(paramParts[0]) == 0 {
-			return fmt.Sprintf(stringType, paramParts[1])
+		trimmedParam := strings.Trim(param, "{}")
+		if !strings.Contains(trimmedParam, ":") {
+			return fmt.Sprintf(stringType, trimmedParam)
 		}
+		paramParts := strings.Split(trimmedParam, ":")
+
 		if len(paramParts) == 2 {
 			fmtString, err := getPatternByType(paramParts[0])
 
@@ -31,7 +32,7 @@ func convertSimplePatternToRegexp(pattern string) string {
 				return ""
 			}
 
-			return fmt.Sprintf(fmtString, paramParts[1])
+			return fmt.Sprintf(fmtString, paramParts[1][:len(paramParts[1])-1])
 		}
 
 		log.Panicf("wrong pattern format %s", param)

@@ -31,18 +31,6 @@ func RegisterUser(w http.ResponseWriter, req *http.Request) {
 
 	credentials.Encrypt()
 
-	exists, err := pool.Dispatch(pool.UserExists, credentials)
-	if err != nil {
-		JsonErrorResponse(w, err, http.StatusInternalServerError)
-		return
-	}
-
-	if exists.(bool) {
-		JsonErrorResponse(w, fmt.Errorf("User with email: %s already exists!", credentials.Email),
-			http.StatusConflict)
-		return
-	}
-
 	user, err := pool.Dispatch(pool.UserCreate, credentials)
 	if err != nil {
 		JsonErrorResponse(w, fmt.Errorf("can not create account: %v", err), http.StatusBadGateway)
@@ -81,18 +69,13 @@ func Login(w http.ResponseWriter, req *http.Request) {
 
 	credentials.Encrypt()
 
-	valid, err := pool.Dispatch(pool.UserAuthorize, credentials)
+	userRaw, err := pool.Dispatch(pool.UserAuthorized, credentials)
 	if err != nil {
-		JsonErrorResponse(w, err, http.StatusInternalServerError)
+		JsonErrorResponse(w, err, http.StatusNotFound)
 		return
 	}
 
-	if !valid.(bool) {
-		JsonErrorResponse(w, fmt.Errorf("can not find user with: %s", credentials.Email), http.StatusNotFound)
-		return
-	}
-
-	user, err := pool.Dispatch(pool.UserFindByEmail, credentials.Email)
+	user, err := models.SafeCastToUser(userRaw)
 	if err != nil {
 		JsonErrorResponse(w, err, http.StatusInternalServerError)
 		return
@@ -107,5 +90,5 @@ func Login(w http.ResponseWriter, req *http.Request) {
 	JsonResponse(w, struct {
 		models.User
 		auth.Token
-	}{user.(models.User), token})
+	}{user, token})
 }

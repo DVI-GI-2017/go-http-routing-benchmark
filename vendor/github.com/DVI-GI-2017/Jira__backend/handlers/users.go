@@ -17,7 +17,7 @@ func AllUsers(w http.ResponseWriter, _ *http.Request) {
 		return
 	}
 
-	JsonResponse(w, users.(models.UsersList))
+	JsonResponse(w, users)
 }
 
 // Returns user with given id.
@@ -30,7 +30,7 @@ func GetUserById(w http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	JsonResponse(w, user.(models.User))
+	JsonResponse(w, user)
 }
 
 // Returns all projects of given user
@@ -42,6 +42,5 @@ func GetAllProjectsFromUser(w http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	JsonResponse(w, projects.(models.ProjectsList))
-	return
+	JsonResponse(w, projects)
 }

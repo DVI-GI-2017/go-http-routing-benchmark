@@ -7,7 +7,7 @@ import (
 )
 
 func TestSimplifiedPattern(t *testing.T) {
-	pattern := regexp.MustCompile(convertSimplePatternToRegexp("/users/hex:id"))
+	pattern := regexp.MustCompile(convertSimplePatternToRegexp("/users/{id}"))
 	pathParams := extractPathParams(pattern, "/users/234feabc1357346781234524")
 
 	expectedPathParams := PathParams{"id": "234feabc1357346781234524"}
@@ -18,7 +18,7 @@ func TestSimplifiedPattern(t *testing.T) {
 }
 
 func TestSimplifiedPatternEmpty(t *testing.T) {
-	pattern := regexp.MustCompile(convertSimplePatternToRegexp("/users/:id"))
+	pattern := regexp.MustCompile(convertSimplePatternToRegexp("/users/{id}"))
 	pathParams := extractPathParams(pattern, "/users/234feabc1357346781234524")
 
 	expectedPathParams := PathParams{"id": "234feabc1357346781234524"}
