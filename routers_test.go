@@ -16,7 +16,7 @@ var (
 		{"Bear", loadBear},
 		{"Beego", loadBeego},
 		{"Bone", loadBone},
-		{"DVI", loadDviMux},
+		{"Dvi", loadDviMux},
 		{"Denco", loadDenco},
 		{"Echo", loadEcho},
 		{"Gin", loadGin},

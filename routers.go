@@ -74,8 +74,6 @@ func (m *mockResponseWriter) WriteString(s string) (n int, err error) {
 
 func (m *mockResponseWriter) WriteHeader(int) {}
 
-var nullLogger *log.Logger
-
 // flag indicating if the normal or the test handler should be loaded
 var loadTestHandler = false
 
@@ -86,7 +84,6 @@ func init() {
 
 	// makes logging 'webscale' (ignores them)
 	log.SetOutput(new(mockResponseWriter))
-	nullLogger = log.New(new(mockResponseWriter), "", 0)
 
 	initBeego()
 	initGin()
